@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Заказы</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .order { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .status-completed { color: green; }
+        .status-pending { color: orange; }
+        .status-cancelled { color: red; }
+        .back-btn { display: inline-block; padding: 8px 15px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Список заказов</h1>
+    
+    <div>
+        {% for order in orders %}
+        <div class="order">
+            <h3>Заказ #{{ order.id }}</h3>
+            <p><strong>Товар:</strong> {{ order.product }}</p>
+            <p><strong>Статус:</strong> 
+                <span class="status-{{ order.status }}">{{ order.status }}</span>
+            </p>
+            <p><strong>Дата:</strong> {{ order.date }}</p>
+            <p><strong>Сумма:</strong> {{ order.amount }} руб.</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <br>
+    <a href="/profile/" class="back-btn">← Назад в личный кабинет</a>
+    <a href="/home/" class="back-btn">На главную</a>
+</body>
+</html>

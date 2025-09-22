@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+    <style>
+        .role-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .role-admin {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .role-manager {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .role-user {
+            background: #eff6ff;
+            color: #1d4ed8;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #64748b;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 5px;
+            background: #3b82f6;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background: #2563eb;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #3b82f6;
+            border: 1px solid #3b82f6;
+        }
+
+        .btn-outline:hover {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc2626;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-success {
+            background: #16a34a;
+        }
+
+        .btn-success:hover {
+            background: #15803d;
+        }
+
+        .user-info {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .user-info h3 {
+            margin-bottom: 10px;
+            color: #1e293b;
+        }
+
+        .admin-panel {
+            background: #eff6ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .admin-panel h3 {
+            margin-bottom: 15px;
+            color: #1e40af;
+        }
+
+        .admin-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .admin-buttons .btn {
+            margin: 2px;
+            text-align: center;
+        }
+
+        .features {
+            background: #f0fdf4;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .features h4 {
+            margin-bottom: 10px;
+            color: #166534;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 5px 0;
+            color: #4b5563;
+        }
+
+        .feature-list li:before {
+            content: "✓ ";
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .message.success {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .message.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .message.info {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        .user-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .user-actions .btn {
+            margin: 2px;
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 20px;
+            }
+            
+            .btn {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="logo">🔐 Система аутентификации</div>
+        <div class="description">
+            Простая и надежная система управления доступом с ролевой моделью
+        </div>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <div class="user-info">
+                <h3>👋 Добро пожаловать, {{ user.first_name }}!</h3>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Роль:</strong> 
+                    <span class="role-badge 
+                        {% if user.role.name == 'admin' %}role-admin
+                        {% elif user.role.name == 'manager' %}role-manager
+                        {% else %}role-user
+                        {% endif %}">
+                        {{ user.role.name|default:"user"|upper }}
+                    </span>
+                </p>
+                <p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y" }}</p>
+            </div>
+
+            <div class="features">
+                <h4>✅ Доступные возможности:</h4>
+                <ul class="feature-list">
+                    {% if user.is_superuser or user.role.name == 'admin' %}
+                    <li>Полный доступ ко всем разделам</li>
+                    <li>Управление пользователями и ролями</li>
+                    <li>Администрирование системы</li>
+                    {% elif user.role.name == 'manager' %}
+                    <li>Просмотр и управление товарами</li>
+                    <li>Просмотр и управление заказами</li>
+                    <li>Расширенные права доступа</li>
+                    {% else %}
+                    <li>Просмотр товаров</li>
+                    <li>Просмотр заказов</li>
+                    <li>Управление личным профилем</li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            <div class="user-actions">
+                <a href="/profile/" class="btn">👤 Личный кабинет</a>
+                
+                {% if user.is_superuser or user.role.name == 'admin' or user.role.name == 'manager' or user.role.name == 'user' %}
+                <a href="/products/" class="btn btn-success">📦 Товары</a>
+                <a href="/orders/" class="btn btn-success">📋 Заказы</a>
+                {% endif %}
+            </div>
+
+            {% if user.is_superuser or user.role.name == 'admin' %}
+            <div class="admin-panel">
+                <h3>⚙️ Панель администратора</h3>
+                <div class="admin-buttons">
+                    <a href="/admin/users/" class="btn btn-danger">👥 Управление пользователями</a>
+                    <a href="/admin/" class="btn">🔧 Админка Django</a>
+                    <a href="/api/admin/access-rules/" class="btn btn-outline">🔐 Управление правами (API)</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <a href="/logout/" class="btn btn-outline">🚪 Выйти из системы</a>
+
+        {% else %}
+            <div class="features">
+                <h4>🚀 Возможности системы:</h4>
+                <ul class="feature-list">
+                    <li>Безопасная регистрация и аутентификация</li>
+                    <li>Гибкая система ролей и прав доступа</li>
+                    <li>Управление пользователями и разрешениями</li>
+                    <li>Простой и интуитивный интерфейс</li>
+                    <li>Защита данных и конфиденциальность</li>
+                </ul>
+            </div>
+
+            <div style="margin: 25px 0;">
+                <a href="/login/" class="btn">🔑 Войти в систему</a>
+                <a href="/register/" class="btn btn-outline">📝 Зарегистрироваться</a>
+            </div>
+
+            <div style="color: #64748b; font-size: 13px; margin-top: 20px;">
+                <p>Для тестирования используйте:</p>
+                <p><strong>Демо-аккаунты:</strong> admin@test.com / manager@test.com / user@test.com</p>
+                <p><strong>Пароль:</strong> admin123 / manager123 / user123</p>
+            </div>
+        {% endif %}
+
+        {% if not user.is_authenticated %}
+        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+            <p style="color: #64748b; font-size: 12px;">
+                Система разработана для демонстрации возможностей аутентификации и авторизации.
+                Используйте её для тестирования ролевой модели доступа.
+            </p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Автоскрытие сообщений через 5 секунд
+        setTimeout(function() {
+            var messages = document.querySelectorAll('.message');
+            messages.forEach(function(message) {
+                message.style.transition = 'opacity 0.5s ease';
+                message.style.opacity = '0';
+                setTimeout(function() {
+                    message.style.display = 'none';
+                }, 500);
+            });
+        }, 5000);
+
+        // Подсветка текущей роли пользователя
+        document.addEventListener('DOMContentLoaded', function() {
+            var roleBadge = document.querySelector('.user-info span');
+            if (roleBadge) {
+                roleBadge.style.transition = 'transform 0.2s ease';
+                roleBadge.addEventListener('mouseover', function() {
+                    this.style.transform = 'scale(1.05)';
+                });
+                roleBadge.addEventListener('mouseout', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

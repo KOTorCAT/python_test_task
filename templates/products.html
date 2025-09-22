@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Товары</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .product { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .back-btn { display: inline-block; padding: 8px 15px; background: #6c757d; color: white; text-decoration: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Список товаров</h1>
+    
+    <div>
+        {% for product in products %}
+        <div class="product">
+            <h3>{{ product.name }}</h3>
+            <p><strong>Цена:</strong> {{ product.price }} руб.</p>
+            <p><strong>Описание:</strong> {{ product.description }}</p>
+            <p><strong>Категория:</strong> {{ product.category }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <br>
+    <a href="/profile/" class="back-btn">← Назад в личный кабинет</a>
+    <a href="/home/" class="back-btn">На главную</a>
+</body>
+</html>
