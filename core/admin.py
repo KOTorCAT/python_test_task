@@ -1,9 +1,24 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.utils.translation import gettext_lazy as _
 from .models import User, Role, BusinessElement, AccessRule
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ('email',)  # Указываем только email вместо username
+
+class CustomUserChangeForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
+    form = CustomUserChangeForm
+    add_form = CustomUserCreationForm
+    
     list_display = ('email', 'first_name', 'last_name', 'is_active', 'role', 'date_joined')
     list_filter = ('is_active', 'is_staff', 'is_superuser', 'role')
     search_fields = ('email', 'first_name', 'last_name')
@@ -11,9 +26,16 @@ class UserAdmin(BaseUserAdmin):
     
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'patronymic')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'role', 'groups', 'user_permissions')}),
-        ('Important dates', {'fields': ('last_login', 'date_joined', 'deleted_at')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'patronymic')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'role', 'groups', 'user_permissions')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined', 'deleted_at')}),
+    )
+    
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'first_name', 'last_name', 'password1', 'password2'),
+        }),
     )
 
 @admin.register(Role)
