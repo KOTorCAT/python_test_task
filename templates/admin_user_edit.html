@@ -87,6 +87,26 @@
         .btn:hover {
             background: #2563eb;
         }
+
+        .message {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .message.success {
+            background: #f0fdf4;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+        }
+
+        .message.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
     </style>
 </head>
 <body>
@@ -95,6 +115,14 @@
         
         <h1>✏️ Изменение роли пользователя</h1>
         
+        {% if messages %}
+            {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
         <div class="user-info">
             <strong>{{ edit_user.first_name }} {{ edit_user.last_name }}</strong><br>
             {{ edit_user.email }}<br>
@@ -102,7 +130,7 @@
         </div>
 
         <form method="post">
-            {% csrf_token %}
+            {% csrf_token %}  <!-- ← ВАЖНО: Добавьте эту строку -->
             
             <div class="form-group">
                 <label for="role">Новая роль:</label>

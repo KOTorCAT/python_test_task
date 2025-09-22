@@ -565,6 +565,7 @@ class UserListView(TemplateView):
         }
         return render(request, self.template_name, context)
 
+@method_decorator(csrf_exempt, name='dispatch')  # ← Добавьте этот декоратор
 class UserUpdateView(TemplateView):
     template_name = 'admin_user_edit.html'
     
@@ -587,12 +588,22 @@ class UserUpdateView(TemplateView):
     
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated or not request.user.is_superuser:
+            messages.error(request, 'Доступ запрещен.')
             return redirect('home_page')
         
         try:
             user = User.objects.get(pk=kwargs['pk'])
-            role_id = request.POST.get('role')
+            action = request.POST.get('action')
             
+            if action == 'deactivate':
+                # Деактивация пользователя
+                user.is_active = False
+                user.save()
+                messages.success(request, f'Пользователь {user.email} деактивирован.')
+                return redirect('user_list')
+            
+            # Изменение роли
+            role_id = request.POST.get('role')
             if role_id:
                 new_role = Role.objects.get(pk=role_id)
                 user.role = new_role

@@ -189,17 +189,16 @@
                     <p><strong>Последний вход:</strong> {% if user.last_login %}{{ user.last_login|date:"d.m.Y H:i" }}{% else %}Никогда{% endif %}</p>
                 </div>
                 
-                <div class="user-actions">
-                    <a href="/admin/users/{{ user.id }}/edit/" class="action-btn edit">✏️ Изменить роль</a>
-                    <form action="/admin/users/manage/" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <input type="hidden" name="user_id" value="{{ user.id }}">
-                        <input type="hidden" name="action" value="deactivate">
-                        <button type="submit" class="action-btn delete" onclick="return confirm('Деактивировать пользователя?')">🚫 Деактивировать</button>
-                    </form>
-                </div>
-            </div>
-            {% empty %}
+               
+                    <div class="user-actions">
+                        <a href="/admin/users/{{ user.id }}/edit/" class="action-btn edit">✏️ Изменить роль</a>
+                        <form action="/admin/users/{{ user.id }}/edit/" method="post" style="display: inline;">
+                            {% csrf_token %}  <!-- ← Добавьте CSRF токен -->
+                            <input type="hidden" name="action" value="deactivate">
+                            <button type="submit" class="action-btn delete" onclick="return confirm('Деактивировать пользователя?')">🚫 Деактивировать</button>
+                        </form>
+                    </div>
+                                {% empty %}
             <div class="user-card">
                 <p>Пользователи не найдены</p>
             </div>
