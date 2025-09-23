@@ -5,121 +5,178 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вход</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+       * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background: #f8fafc;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            line-height: 1.5;
-        }
+body {
+    font-family: 'Inter', 'SF Pro Display', -apple-system, sans-serif;
+    background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    line-height: 1.5;
+}
 
-        .card {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e2e8f0;
-            width: 100%;
-            max-width: 400px;
-        }
+.card {
+    background: white;
+    padding: 48px;
+    border-radius: 16px;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.08),
+        0 2px 4px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+}
 
-        .logo {
-            text-align: center;
-            font-size: 24px;
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 8px;
-        }
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
+}
 
-        .subtitle {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
+.logo {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: #000000;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+.subtitle {
+    text-align: center;
+    color: #666666;
+    margin-bottom: 36px;
+    font-size: 15px;
+    line-height: 1.5;
+    font-weight: 400;
+}
 
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 500;
-            color: #374151;
-            font-size: 14px;
-        }
+.form-group {
+    margin-bottom: 24px;
+}
 
-        input {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d1d5db;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: border-color 0.2s;
-        }
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #000000;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+}
 
-        input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-        }
+input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #f0f0f0;
+    border-radius: 8px;
+    font-size: 15px;
+    background: #fafafa;
+    transition: all 0.2s;
+    font-family: inherit;
+}
 
-        .btn {
-            width: 100%;
-            padding: 12px;
-            background: #3b82f6;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
+input:focus {
+    outline: none;
+    border-color: #000000;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+}
 
-        .btn:hover {
-            background: #2563eb;
-        }
+input:hover {
+    border-color: #e0e0e0;
+}
 
-        .links {
-            text-align: center;
-            margin-top: 25px;
-            font-size: 14px;
-            color: #64748b;
-        }
+.btn {
+    width: 100%;
+    padding: 14px;
+    background: #000000;
+    color: white;
+    border: 2px solid #000000;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    letter-spacing: 0.01em;
+}
 
-        .links a {
-            color: #3b82f6;
-            text-decoration: none;
-        }
+.btn:hover {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
 
-        .links a:hover {
-            text-decoration: underline;
-        }
+.links {
+    text-align: center;
+    margin-top: 28px;
+    font-size: 14px;
+    color: #666666;
+}
 
-        .message {
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 13px;
-            text-align: center;
-        }
+.links a {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+}
 
-        .message.error {
-            background: #fef2f2;
-            color: #dc2626;
-            border: 1px solid #fecaca;
-        }
+.links a:hover {
+    border-bottom-color: #000000;
+}
+
+.message {
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+    border-left: 4px solid;
+    background: #fafafa;
+    border: 1px solid #f0f0f0;
+}
+
+.message.error {
+    border-left-color: #000000;
+    background: #f8f8f8;
+    color: #000000;
+}
+
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #e5e5e5 50%, transparent 100%);
+    margin: 28px 0;
+}
+
+@media (max-width: 480px) {
+    .card {
+        padding: 32px 24px;
+        border-radius: 12px;
+    }
+    
+    input {
+        padding: 12px 14px;
+    }
+    
+    .btn {
+        padding: 13px;
+    }
+}
     </style>
 </head>
 <body>
