@@ -15,12 +15,11 @@ python create_test_users.py
 python manage.py runserver
 ```
 
-## Демо-аккаунты
+## Демо-аккаунт
 
 ```
-Админ:     admin@test.com    / admin123
-Менеджер:  manager@test.com  / manager123  
-Пользователь: user@test.com  / user123
+Админ:     bread@mail.ru    / 123
+
 ```
 
 ## Основные URL
