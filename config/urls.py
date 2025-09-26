@@ -1,41 +1,18 @@
 from django.contrib import admin
 from django.urls import path
 from django.shortcuts import redirect
-from core.views import (
-    # API Views
-    HomePageView,
-    LoginView, 
-    LogoutView, 
-    RegisterView, 
-    UserProfileView, 
-    UserDeleteView,
-    MockProductsView,
-    MockOrdersView,
-    AccessRuleListView,
-    AccessRuleUpdateView,
-    
-    # HTML Views (новые - для простых пользователей)
-    SimpleHomeView,
-    SimpleLoginView,
-    SimpleRegisterView,
-    SimpleProfileView,
-    SimpleProductsView,
-    SimpleOrdersView,
-    SimpleLogoutView,
-    UserListView, 
-    UserUpdateView, 
-    UserManagementView
-)
+
+from core.web.views import SimpleHomeView, SimpleLoginView, SimpleRegisterView, SimpleProfileView
+from core.web.views import SimpleProductsView, SimpleOrdersView, SimpleLogoutView
+from core.api.views import HomePageView, LoginView, RegisterView, LogoutView, UserProfileView, UserDeleteView
+from core.api.views import MockProductsView, MockOrdersView, AccessRuleListView, AccessRuleUpdateView
 
 def root_redirect(request):
-    """Перенаправление с корневого URL на главную страницу"""
     return redirect('home_page')
 
 urlpatterns = [
-    # 📍 Корневой URL - перенаправление на главную
+    # 🌐 WEB URLs (HTML - используют сессии Django)
     path('', root_redirect, name='root'),
-    
-    # 🏠 HTML СТРАНИЦЫ (для обычных пользователей)
     path('home/', SimpleHomeView.as_view(), name='home_page'),
     path('login/', SimpleLoginView.as_view(), name='simple_login'),
     path('register/', SimpleRegisterView.as_view(), name='simple_register'),
@@ -44,21 +21,18 @@ urlpatterns = [
     path('orders/', SimpleOrdersView.as_view(), name='simple_orders'),
     path('logout/', SimpleLogoutView.as_view(), name='simple_logout'),
     
+    # 🔌 API URLs (JSON - используют JWT токены)
+    path('api/', HomePageView.as_view(), name='api_home'),
+    path('api/login/', LoginView.as_view(), name='api_login'),
+    path('api/register/', RegisterView.as_view(), name='api_register'),
+    path('api/logout/', LogoutView.as_view(), name='api_logout'),
+    path('api/profile/', UserProfileView.as_view(), name='api_profile'),
+    path('api/delete-account/', UserDeleteView.as_view(), name='api_delete_account'),
+    path('api/products/', MockProductsView.as_view(), name='api_products'),
+    path('api/orders/', MockOrdersView.as_view(), name='api_orders'),
+    path('api/admin/access-rules/', AccessRuleListView.as_view(), name='api_access_rules_list'),
+    path('api/admin/access-rules/<int:pk>/', AccessRuleUpdateView.as_view(), name='api_access_rules_update'),
+    
     # ⚙️ АДМИНКА Django
     path('admin/', admin.site.urls),
-    
-    # 🔐 API ENDPOINTS (для разработчиков/интеграций)
-    path('api/', HomePageView.as_view(), name='api_home'),
-    path('api/login/', LoginView.as_view(), name='login'),
-    path('api/logout/', LogoutView.as_view(), name='logout'),
-    path('api/register/', RegisterView.as_view(), name='register'),
-    path('api/profile/', UserProfileView.as_view(), name='profile'),
-    path('api/delete-account/', UserDeleteView.as_view(), name='delete-account'),
-    path('api/products/', MockProductsView.as_view(), name='products'),
-    path('api/orders/', MockOrdersView.as_view(), name='orders'),
-    path('api/admin/access-rules/', AccessRuleListView.as_view(), name='access-rules-list'),
-    path('api/admin/access-rules/<int:pk>/', AccessRuleUpdateView.as_view(), name='access-rules-update'),
-    path('admin/users/', UserListView.as_view(), name='user_list'),
-    path('admin/users/<int:pk>/edit/', UserUpdateView.as_view(), name='user_edit'),
-    path('admin/users/manage/', UserManagementView.as_view(), name='user_management'),
 ]

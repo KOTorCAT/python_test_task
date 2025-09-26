@@ -2,13 +2,9 @@
 Django settings for config project.
 """
 from pathlib import Path
-from datetime import timedelta
 from decouple import config
-import jwt
-from django.conf import settings
 from django.core.management.utils import get_random_secret_key
 
-# ✅ ОБЯЗАТЕЛЬНО: определение BASE_DIR в самом начале
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings
@@ -36,6 +32,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'core.middleware.jwt_middleware.JWTAuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -43,7 +40,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # ← ВАЖНО: эта строка должна быть
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,45 +81,9 @@ AUTH_USER_MODEL = 'core.User'
 # DRF settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    'DEFAULT_PERMISSION_CLASSES': [],
 }
 
 # JWT settings
 JWT_SECRET_KEY = config('JWT_SECRET_KEY', default=SECRET_KEY)
 JWT_ALGORITHM = 'HS256'
-
-# Упрощенный middleware (временно уберем сложную логику)
-class SimpleJWTMiddleware:
-    def __init__(self, get_response):
-        self.get_response = get_response
-    
-    def __call__(self, request):
-        # Пропускаем аутентификацию для всех путей кроме API
-        if not request.path.startswith('/api/'):
-            return self.get_response(request)
-        
-        # Простая проверка JWT для API
-        auth_header = request.headers.get('Authorization', '')
-        if auth_header.startswith('Bearer '):
-            token = auth_header.split(' ')[1]
-            try:
-                payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
-                user_id = payload.get('user_id')
-                if user_id:
-                    from core.models import User
-                    try:
-                        user = User.objects.get(id=user_id, is_active=True)
-                        request.user = user
-                    except User.DoesNotExist:
-                        request.user = None
-            except jwt.InvalidTokenError:
-                request.user = None
-        else:
-            request.user = None
-        
-        return self.get_response(request)
-
-# Добавляем middleware
-MIDDLEWARE.append('config.settings.SimpleJWTMiddleware')
